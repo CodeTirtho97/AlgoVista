@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import config from '../config';
 
-interface AppError extends Error {
+// Use a different name for the interface to avoid the merge conflict
+interface IAppError extends Error {
   statusCode?: number;
   isOperational?: boolean;
 }
 
 // Error handling middleware
 export const errorHandler = (
-  err: AppError,
+  err: IAppError,
   req: Request,
   res: Response,
   next: NextFunction

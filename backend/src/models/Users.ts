@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import config from '../config';
 
 // Define user roles
@@ -184,10 +184,12 @@ userSchema.methods.generateAuthToken = function (): string {
     role: user.role
   };
   
-  // Sign and return token
-  return jwt.sign(payload, config.jwtSecret, {
-    expiresIn: config.jwtExpiration
-  });
+  // Sign and return token - Fix the parameter types
+  return jwt.sign(
+  payload,
+  config.jwtSecret as Secret,
+  { expiresIn: config.jwtExpiration } as SignOptions
+);
 };
 
 // Create and export User model

@@ -18,7 +18,7 @@ export default class App {
   public app: Application;
   public httpServer: http.Server;
   public io: SocketIOServer;
-  private apolloServer: ApolloServer;
+  private apolloServer!: ApolloServer;
 
   constructor() {
     this.app = express();
@@ -39,21 +39,23 @@ export default class App {
   }
 
   private async setupApolloServer(): Promise<void> {
-    this.apolloServer = new ApolloServer({
-      typeDefs,
-      resolvers,
-      context: ({ req }) => {
-        // Extract JWT from request and include in context
-        const token = req.headers.authorization || '';
-        return { token };
-      },
-      plugins: [ApolloServerPluginDrainHttpServer({ httpServer: this.httpServer })],
-      introspection: config.nodeEnv !== 'production'
-    });
+  this.apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => {
+      const token = req.headers.authorization || '';
+      return { token };
+    },
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer: this.httpServer })],
+    introspection: config.nodeEnv !== 'production'
+  });
 
-    await this.apolloServer.start();
-    this.apolloServer.applyMiddleware({ app: this.app, path: '/graphql' });
-  }
+  await this.apolloServer.start();
+  this.apolloServer.applyMiddleware({ 
+    app: this.app as any, // Type cast to avoid the type error
+    path: '/graphql' 
+  });
+}
 
   private configureMiddleware(): void {
     // Security middleware

@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Router } from 'express';
 import * as algorithmController from '../controllers/algorithmController';
 import { authenticate } from '../middleware/authMiddleware';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 // Public routes
 router.get('/', algorithmController.getAllAlgorithms);

@@ -1,4 +1,13 @@
-import { Algorithm, IAlgorithm, AlgorithmCategory, AlgorithmDifficulty, ProgrammingLanguage } from '../models';
+import mongoose, { Types } from 'mongoose';
+import { 
+  Algorithm, 
+  IAlgorithm, 
+  AlgorithmCategory, 
+  AlgorithmDifficulty, 
+  ProgrammingLanguage,
+  TimeComplexity,
+  SpaceComplexity
+} from '../models';
 
 export interface AlgorithmFilters {
   categories?: AlgorithmCategory[];
@@ -15,7 +24,8 @@ export class AlgorithmLibraryService {
   public async getAlgorithmById(id: string): Promise<IAlgorithm> {
     const algorithm = await Algorithm.findById(id)
       .populate('createdBy', 'username email')
-      .populate('relatedAlgorithms');
+      .populate('relatedAlgorithms')
+      .exec();
     
     if (!algorithm) {
       throw new Error('Algorithm not found');
@@ -30,7 +40,8 @@ export class AlgorithmLibraryService {
   public async getAlgorithmBySlug(slug: string): Promise<IAlgorithm> {
     const algorithm = await Algorithm.findOne({ slug })
       .populate('createdBy', 'username email')
-      .populate('relatedAlgorithms');
+      .populate('relatedAlgorithms')
+      .exec();
     
     if (!algorithm) {
       throw new Error('Algorithm not found');
@@ -85,7 +96,8 @@ export class AlgorithmLibraryService {
       .populate('createdBy', 'username email')
       .sort({ name: 1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .exec();
     
     return algorithms;
   }
@@ -160,23 +172,34 @@ export class AlgorithmLibraryService {
       isPublished: boolean;
     }
   ): Promise<IAlgorithm> {
-    // Create algorithm object
+    // Create algorithm object with proper type casting
     const algorithm = new Algorithm({
       name: data.name,
       description: data.description,
       category: data.category,
       difficulty: data.difficulty,
-      implementations: data.implementations,
-      examples: data.examples,
+      implementations: data.implementations.map(impl => ({
+        language: impl.language,
+        code: impl.code,
+        defaultDataset: impl.defaultDataset,
+        timeComplexity: impl.timeComplexity as unknown as TimeComplexity,
+        spaceComplexity: impl.spaceComplexity as unknown as SpaceComplexity
+      })),
+      // Fix for the examples array - ensure explanation is always a string
+      examples: data.examples.map(ex => ({
+        input: ex.input,
+        output: ex.output,
+        explanation: ex.explanation || '' // Provide empty string as default
+      })),
       applications: data.applications,
       resources: data.resources,
-      createdBy: userId,
+      createdBy: new Types.ObjectId(userId),
       isPublished: data.isPublished
     });
     
     // Add related algorithms if provided
     if (data.relatedAlgorithmIds && data.relatedAlgorithmIds.length > 0) {
-      algorithm.relatedAlgorithms = data.relatedAlgorithmIds;
+      algorithm.relatedAlgorithms = data.relatedAlgorithmIds.map(id => new Types.ObjectId(id));
     }
     
     // Save to database
@@ -235,15 +258,34 @@ export class AlgorithmLibraryService {
     if (data.description) algorithm.description = data.description;
     if (data.category) algorithm.category = data.category;
     if (data.difficulty) algorithm.difficulty = data.difficulty;
-    if (data.implementations) algorithm.implementations = data.implementations;
-    if (data.examples) algorithm.examples = data.examples;
+    
+    // Handle implementation with proper type casting
+    if (data.implementations) {
+      algorithm.implementations = data.implementations.map(impl => ({
+        language: impl.language,
+        code: impl.code,
+        defaultDataset: impl.defaultDataset,
+        timeComplexity: impl.timeComplexity as unknown as TimeComplexity,
+        spaceComplexity: impl.spaceComplexity as unknown as SpaceComplexity
+      }));
+    }
+    
+    // Fix for examples with required explanation
+    if (data.examples) {
+      algorithm.examples = data.examples.map(ex => ({
+        input: ex.input,
+        output: ex.output,
+        explanation: ex.explanation || '' // Provide empty string as default
+      }));
+    }
+    
     if (data.applications) algorithm.applications = data.applications;
     if (data.resources) algorithm.resources = data.resources;
     if (data.isPublished !== undefined) algorithm.isPublished = data.isPublished;
     
-    // Update related algorithms if provided
+    // Update related algorithms if provided, converting strings to ObjectIds
     if (data.relatedAlgorithmIds) {
-      algorithm.relatedAlgorithms = data.relatedAlgorithmIds;
+      algorithm.relatedAlgorithms = data.relatedAlgorithmIds.map(id => new Types.ObjectId(id));
     }
     
     // Save changes
@@ -280,17 +322,20 @@ export class AlgorithmLibraryService {
   public async getRelatedAlgorithms(algorithmId: string, limit: number = 5): Promise<IAlgorithm[]> {
     // Get algorithm to find its related algorithms
     const algorithm = await Algorithm.findById(algorithmId)
-      .populate('relatedAlgorithms');
+      .populate('relatedAlgorithms')
+      .exec();
     
     if (!algorithm) {
       throw new Error('Algorithm not found');
     }
     
-    const relatedIds = algorithm.relatedAlgorithms.map(a => a._id);
+    // Safely access populated relatedAlgorithms
+    const relatedAlgorithms = algorithm.relatedAlgorithms as unknown as IAlgorithm[];
+    const relatedIds = relatedAlgorithms.map(a => a._id);
     
     // If we have enough explicitly defined related algorithms, return them
     if (relatedIds.length >= limit) {
-      return algorithm.relatedAlgorithms.slice(0, limit);
+      return relatedAlgorithms.slice(0, limit);
     }
     
     // Otherwise, find algorithms in the same category
@@ -301,9 +346,10 @@ export class AlgorithmLibraryService {
       category: algorithm.category,
       isPublished: true
     })
-      .limit(remainingLimit);
+      .limit(remainingLimit)
+      .exec();
     
-    return [...algorithm.relatedAlgorithms, ...additionalAlgorithms];
+    return [...relatedAlgorithms, ...additionalAlgorithms];
   }
   
   /**
@@ -314,7 +360,8 @@ export class AlgorithmLibraryService {
     // For now, we'll return recently added algorithms
     return await Algorithm.find({ isPublished: true })
       .sort({ createdAt: -1 })
-      .limit(limit);
+      .limit(limit)
+      .exec();
   }
   
   /**
