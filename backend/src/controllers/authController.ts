@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../models';
+import { User, IUser } from '../models';
 import { AppError } from '../middleware/errorHandler';
 
 /**
@@ -39,9 +39,22 @@ export const register = async (
     // Generate authentication token
     const token = user.generateAuthToken();
     
-    // Remove password from response
-    const userResponse = user.toObject();
-    delete userResponse.password;
+    // Instead of deleting a property, create a new object without the password
+    const userResponse = {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      lastLogin: user.lastLogin,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      algorithms: user.algorithms,
+      progress: user.progress,
+      settings: user.settings
+    };
     
     res.status(201).json({
       status: 'success',
@@ -92,9 +105,22 @@ export const login = async (
     // Generate authentication token
     const token = user.generateAuthToken();
     
-    // Remove password from response
-    const userResponse = user.toObject();
-    delete userResponse.password;
+    // Instead of deleting a property, create a new object without the password
+    const userResponse = {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      lastLogin: user.lastLogin,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      algorithms: user.algorithms,
+      progress: user.progress,
+      settings: user.settings
+    };
     
     res.status(200).json({
       status: 'success',

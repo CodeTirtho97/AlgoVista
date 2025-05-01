@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Router } from 'express';
 import authRoutes from './authRoutes';
 import algorithmRoutes from './algorithmRoutes';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 // Mount route modules
 router.use('/auth', authRoutes);
