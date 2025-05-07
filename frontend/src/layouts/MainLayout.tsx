@@ -1,102 +1,43 @@
 import React from "react";
-import { Outlet, Link as RouterLink } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import {
-  AppBar,
   Box,
-  Toolbar,
-  Typography,
-  Button,
   Container,
-  Link,
-  Stack,
   Divider,
+  Typography,
+  Stack,
+  alpha,
+  useTheme,
 } from "@mui/material";
+import Navbar from "../components/ui/Navbar";
+import { useThemeMode } from "../ThemeProvider";
 
 const MainLayout: React.FC = () => {
+  const theme = useTheme();
+  const { mode } = useThemeMode();
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Container
-            maxWidth="xl"
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              component={RouterLink}
-              to="/"
-              sx={{
-                textDecoration: "none",
-                color: "white",
-                fontWeight: "bold",
-              }}
-            >
-              AlgoVista
-            </Typography>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        background:
+          mode === "light"
+            ? "linear-gradient(145deg, #f7f9fc, #ffffff)"
+            : "linear-gradient(145deg, #121212, #1e1e1e)",
+      }}
+    >
+      <Navbar />
 
-            <Stack direction="row" spacing={4}>
-              <Link
-                component={RouterLink}
-                to="/"
-                color="inherit"
-                underline="none"
-              >
-                Home
-              </Link>
-              <Link
-                component={RouterLink}
-                to="/algorithms"
-                color="inherit"
-                underline="none"
-              >
-                Algorithms
-              </Link>
-              <Link
-                component={RouterLink}
-                to="/compare"
-                color="inherit"
-                underline="none"
-              >
-                Compare
-              </Link>
-              <Link
-                component={RouterLink}
-                to="/learn"
-                color="inherit"
-                underline="none"
-              >
-                Learn
-              </Link>
-            </Stack>
-
-            <Stack direction="row" spacing={2}>
-              <Link
-                component={RouterLink}
-                to="/login"
-                color="inherit"
-                underline="none"
-              >
-                Login
-              </Link>
-              <Button
-                component={RouterLink}
-                to="/signup"
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                Sign Up
-              </Button>
-            </Stack>
-          </Container>
-        </Toolbar>
-      </AppBar>
-
-      <Box component="main" sx={{ flexGrow: 1, py: 4 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: { xs: 2, md: 4 },
+          px: { xs: 0, sm: 2 },
+        }}
+      >
         <Container maxWidth="xl">
           <Outlet />
         </Container>
@@ -104,45 +45,174 @@ const MainLayout: React.FC = () => {
 
       <Box
         component="footer"
-        sx={{ bgcolor: "grey.900", color: "white", py: 6, mt: "auto" }}
+        sx={{
+          py: 6,
+          mt: "auto",
+          background:
+            mode === "light"
+              ? "linear-gradient(145deg, #f7f9fc, #eef2f6)"
+              : "linear-gradient(145deg, #1a1a1a, #121212)",
+          borderTop: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+        }}
       >
         <Container maxWidth="xl">
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
             <Box sx={{ flex: "1 1 250px", minWidth: "250px" }}>
-              <Typography variant="h6" gutterBottom>
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  fontWeight: "bold",
+                  background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
                 AlgoVista
               </Typography>
-              <Typography variant="body2" color="grey.400">
+              <Typography variant="body2" color="text.secondary">
                 Interactive algorithm visualization platform to transform how
-                developers understand and learn algorithms.
+                developers understand and learn algorithms. Perfect for students
+                preparing for technical interviews.
               </Typography>
             </Box>
 
             <Box sx={{ flex: "1 1 250px", minWidth: "250px" }}>
-              <Typography variant="subtitle1" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                 Features
               </Typography>
-              <Stack spacing={1}>{/* Links remain the same */}</Stack>
+              <Stack spacing={1}>
+                <Typography
+                  component="a"
+                  href="/algorithms"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  Algorithm Library
+                </Typography>
+                <Typography
+                  component="a"
+                  href="/compare"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  Algorithm Comparison
+                </Typography>
+                <Typography
+                  component="a"
+                  href="/learn"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  Learning Paths
+                </Typography>
+              </Stack>
             </Box>
 
             <Box sx={{ flex: "1 1 250px", minWidth: "250px" }}>
-              <Typography variant="subtitle1" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                 Resources
               </Typography>
-              <Stack spacing={1}>{/* Links remain the same */}</Stack>
+              <Stack spacing={1}>
+                <Typography
+                  component="a"
+                  href="#"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  Documentation
+                </Typography>
+                <Typography
+                  component="a"
+                  href="#"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  API Reference
+                </Typography>
+                <Typography
+                  component="a"
+                  href="#"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  GitHub Repository
+                </Typography>
+              </Stack>
             </Box>
 
             <Box sx={{ flex: "1 1 250px", minWidth: "250px" }}>
-              <Typography variant="subtitle1" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                 Contact
               </Typography>
-              <Stack spacing={1}>{/* Links remain the same */}</Stack>
+              <Stack spacing={1}>
+                <Typography
+                  component="a"
+                  href="mailto:support@algovista.com"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  support@algovista.com
+                </Typography>
+                <Typography
+                  component="a"
+                  href="#"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  Feedback
+                </Typography>
+                <Typography
+                  component="a"
+                  href="#"
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": { color: theme.palette.primary.main },
+                  }}
+                >
+                  Community
+                </Typography>
+              </Stack>
             </Box>
           </Box>
 
-          <Divider sx={{ borderColor: "grey.800", my: 4 }} />
+          <Divider sx={{ my: 4, opacity: 0.1 }} />
 
-          <Typography variant="body2" color="grey.500" align="center">
+          <Typography variant="body2" color="text.secondary" align="center">
             &copy; {new Date().getFullYear()} AlgoVista. All rights reserved.
           </Typography>
         </Container>

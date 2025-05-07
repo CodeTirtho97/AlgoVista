@@ -2,33 +2,34 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { store } from "./store";
 import App from "./App";
+import { ThemeProvider } from "./ThemeProvider";
 
-// Create a theme instance
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#0284c7", // Blue color similar to what we had before
-    },
-    secondary: {
-      main: "#7c3aed", // Purple color similar to what we had before
-    },
-    background: {
-      default: "#f5f5f5",
-    },
-  },
-  typography: {
-    fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
-  },
-});
+// Add Google Fonts preconnect for performance
+const preconnectLink = document.createElement("link");
+preconnectLink.rel = "preconnect";
+preconnectLink.href = "https://fonts.googleapis.com";
+document.head.appendChild(preconnectLink);
+
+const preconnectGstatic = document.createElement("link");
+preconnectGstatic.rel = "preconnect";
+preconnectGstatic.href = "https://fonts.gstatic.com";
+preconnectGstatic.crossOrigin = "anonymous";
+document.head.appendChild(preconnectGstatic);
+
+// Add Inter font which we use in our theme
+const fontLink = document.createElement("link");
+fontLink.rel = "stylesheet";
+fontLink.href =
+  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap";
+document.head.appendChild(fontLink);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider>
         <CssBaseline /> {/* Provides CSS baseline/reset */}
         <App />
       </ThemeProvider>
