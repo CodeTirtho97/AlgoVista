@@ -152,6 +152,11 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
             borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           }}
         >
+          <img
+            src="/algo_icon.png"
+            alt="AlgoVista Logo"
+            style={{ height: "24px", width: "auto" }}
+          />
           <Typography
             component={RouterLink}
             to="/"

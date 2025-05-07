@@ -25,6 +25,11 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import CallSplitIcon from "@mui/icons-material/CallSplit";
+import RestoreIcon from "@mui/icons-material/Restore";
+import AbcIcon from "@mui/icons-material/Abc";
+import TimelineIcon from "@mui/icons-material/Timeline";
 
 // Update type definition for setTimeout/clearTimeout
 type TimeoutType = ReturnType<typeof setTimeout>;
@@ -234,7 +239,7 @@ const HomePage: React.FC = () => {
     },
     {
       name: "Graph",
-      icon: <AccountTreeIcon fontSize="large" />,
+      icon: <TimelineIcon fontSize="large" />,
       count: 7,
       link: "/algorithms/graph",
       color: "#8338ec",
@@ -250,32 +255,77 @@ const HomePage: React.FC = () => {
       description:
         "Solve complex problems by breaking them down into simpler subproblems.",
     },
+    {
+      name: "Greedy",
+      icon: <CurrencyExchangeIcon fontSize="large" />,
+      count: 5,
+      link: "/algorithms/greedy",
+      color: "#38b000",
+      description:
+        "Find optimal solutions by making locally optimal choices at each stage.",
+    },
+    {
+      name: "Divide & Conquer",
+      icon: <CallSplitIcon fontSize="large" />,
+      count: 4,
+      link: "/algorithms/divide-conquer",
+      color: "#ffaa00",
+      description:
+        "Break problems into smaller subproblems, solve them independently, and combine results.",
+    },
+    {
+      name: "Backtracking",
+      icon: <RestoreIcon fontSize="large" />,
+      count: 6,
+      link: "/algorithms/backtracking",
+      color: "#7209b7",
+      description:
+        "Find solutions incrementally by trying possibilities and backtracking when needed.",
+    },
+    {
+      name: "Tree",
+      icon: <AccountTreeIcon fontSize="large" />,
+      count: 7,
+      link: "/algorithms/tree",
+      color: "#4cc9f0",
+      description:
+        "Explore hierarchical data structures with traversal and manipulation algorithms.",
+    },
+    {
+      name: "Strings",
+      icon: <AbcIcon fontSize="large" />,
+      count: 6,
+      link: "/algorithms/strings",
+      color: "#f72585",
+      description:
+        "Analyze and manipulate text with pattern matching and transformation algorithms.",
+    },
   ];
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      {/* Hero Section */}
+      {/* Hero Section - Dark Mode */}
       <Box
         sx={{
           position: "relative",
-          overflow: "hidden",
-          py: { xs: 8, md: 12 },
-          // Important: Setting an explicit dark background with no transparency
-          bgcolor: "#051120", // Very dark navy
+          width: "100%",
+          m: 0,
+          p: 0,
           color: "white",
           textAlign: "center",
-          // Remove any border radius that might blend with parent elements
-          borderRadius: 0,
-          // Add a clip-path to ensure no background bleeds through
-          clipPath: "inset(0)",
-          // Add a higher z-index to ensure it sits above any parent backgrounds
-          zIndex: 10,
-          // Add margin to separate from any parent containers
-          mx: 0,
-          mt: 0,
+          // Dark mode gradient that blends with the dark theme
+          background: (theme) =>
+            theme.palette.mode === "dark"
+              ? "linear-gradient(180deg, rgba(13,17,27,1) 0%, rgba(18,25,40,0.98) 100%)"
+              : "linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%)",
+          boxSizing: "border-box",
+          borderBottom: (theme) =>
+            theme.palette.mode === "dark"
+              ? "1px solid rgba(255,255,255,0.05)"
+              : "1px solid rgba(0,0,0,0.05)",
         }}
       >
-        {/* Simple dot pattern - very subtle */}
+        {/* Dark mode background pattern */}
         <Box
           sx={{
             position: "absolute",
@@ -283,10 +333,12 @@ const HomePage: React.FC = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            opacity: 0.05,
-            background: "radial-gradient(#ffffff 1px, transparent 1px)",
-            backgroundSize: "20px 20px",
-            zIndex: 1,
+            opacity: 0.04,
+            display: { xs: "none", md: "block" },
+            backgroundImage: (theme) =>
+              theme.palette.mode === "dark"
+                ? `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`
+                : `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
 
@@ -296,65 +348,108 @@ const HomePage: React.FC = () => {
           sx={{
             position: "relative",
             zIndex: 2,
-            // Important: Add padding to create space at the top
-            pt: { xs: 4, md: 8 },
+            py: { xs: 8, md: 10 },
           }}
         >
-          {/* Clean blue icon */}
+          {/* Logo */}
           <Box
-            component="span"
             sx={{
-              display: "inline-flex",
-              p: 2,
-              borderRadius: "50%",
-              mb: 3,
-              bgcolor: "#0099ff",
-              color: "white",
+              mb: 4,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <BarChartIcon sx={{ fontSize: 40 }} />
+            <Box
+              sx={{
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "120px",
+                  height: "120px",
+                  background: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "radial-gradient(circle, rgba(0, 9, 15, 0.94) 0%, rgba(0,0,0,0) 70%)"
+                      : "radial-gradient(circle, rgba(241, 243, 244, 0.96) 0%, rgba(255, 255, 255, 0.95) 70%)",
+                  borderRadius: "50%",
+                  zIndex: -1,
+                },
+              }}
+            >
+              <img
+                src="/algo_icon.png"
+                alt="AlgoVista Logo"
+                style={{
+                  height: "80px",
+                  width: "auto",
+                  position: "relative",
+                }}
+              />
+            </Box>
           </Box>
 
-          {/* Main heading - pure white */}
+          {/* Main heading - dark mode */}
           <Typography
             variant="h1"
             component="h1"
             sx={{
               fontWeight: 700,
-              color: "white",
-              fontSize: { xs: "2.5rem", md: "3.75rem" },
-              lineHeight: 1.2,
-              mb: 1,
-              mt: 2,
+              fontSize: { xs: "2.75rem", sm: "3.5rem", md: "4.5rem" },
+              lineHeight: 1.1,
+              mb: 2,
+              color: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "#a4fffa" // Teal color for dark mode
+                  : theme.palette.primary.dark, // Primary dark for light mode
+              textShadow: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "0 0 20px rgba(164, 255, 250, 0.15)"
+                  : "none",
             }}
           >
             Visualize Algorithms
           </Typography>
 
-          {/* Subtitle - bright blue */}
+          {/* Subtitle with theme-aware styles */}
           <Typography
             variant="h2"
             component="div"
             sx={{
               fontWeight: 600,
-              color: "#0099ff", // Bright blue
-              fontSize: { xs: "1.75rem", md: "2.5rem" },
+              color: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "#0099ff" // Bright blue for dark mode
+                  : theme.palette.secondary.main, // Secondary for light mode
+              fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
               mb: 4,
+              textShadow: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "0 0 10px rgba(0, 153, 255, 0.2)"
+                  : "none",
             }}
           >
             Like Never Before
           </Typography>
 
-          {/* Description - slightly brighter for readability */}
+          {/* Description with theme-aware text color */}
           <Typography
             variant="h6"
             sx={{
-              maxWidth: "800px",
+              maxWidth: "700px",
               mx: "auto",
-              color: "rgba(255,255,255,0.9)",
+              color: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "rgba(255,255,255,0.8)"
+                  : "rgba(0,0,0,0.7)",
               fontWeight: "normal",
               lineHeight: 1.6,
-              mb: 5,
+              mb: 6,
+              px: { xs: 2, md: 4 },
+              fontSize: { xs: "1rem", md: "1.1rem" },
             }}
           >
             Transform how you understand algorithms through interactive
@@ -362,14 +457,14 @@ const HomePage: React.FC = () => {
             paths. Perfect for students and developers alike.
           </Typography>
 
-          {/* Action buttons */}
+          {/* CTA buttons with theme-aware styles */}
           <Box
             sx={{
               display: "flex",
-              gap: 3,
+              gap: { xs: 2, md: 3 },
               justifyContent: "center",
               flexWrap: "wrap",
-              mb: 6, // Add bottom margin
+              mb: { xs: 6, md: 8 },
             }}
           >
             <Button
@@ -379,17 +474,32 @@ const HomePage: React.FC = () => {
               size="large"
               endIcon={<ArrowForwardIcon />}
               sx={{
-                bgcolor: "#0099ff", // Bright blue
+                background: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "linear-gradient(45deg, #0088ff, #00c3ff)"
+                    : theme.palette.primary.main,
                 color: "white",
-                px: 4,
-                py: 1.5,
+                px: { xs: 3, md: 4 },
+                py: { xs: 1.5, md: 1.75 },
                 fontWeight: 600,
+                fontSize: { xs: "1rem", md: "1.1rem" },
+                borderRadius: "8px",
+                boxShadow: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "0 4px 15px rgba(0, 153, 255, 0.3)"
+                    : "0 4px 12px rgba(0, 0, 0, 0.15)",
                 "&:hover": {
-                  bgcolor: "#007dd6", // Darker blue on hover
+                  background: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "linear-gradient(45deg, #0070d8, #00adff)"
+                      : theme.palette.primary.dark,
                   transform: "translateY(-3px)",
+                  boxShadow: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "0 8px 20px rgba(0, 153, 255, 0.5)"
+                      : "0 8px 20px rgba(0, 0, 0, 0.2)",
                 },
                 transition: "all 0.3s ease",
-                borderRadius: "8px",
               }}
             >
               Explore Algorithms
@@ -400,20 +510,267 @@ const HomePage: React.FC = () => {
               variant="outlined"
               size="large"
               sx={{
-                borderColor: "#0099ff", // Bright blue
-                borderWidth: 2,
-                color: "white",
-                px: 4,
-                py: 1.5,
-                "&:hover": {
-                  borderColor: "#007dd6", // Darker blue on hover
-                  bgcolor: "rgba(0, 153, 255, 0.1)",
-                },
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "rgba(255,255,255,0.2)"
+                    : theme.palette.primary.main,
+                borderWidth: 1,
+                color: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "white"
+                    : theme.palette.primary.main,
+                px: { xs: 3, md: 4 },
+                py: { xs: 1.5, md: 1.75 },
+                fontWeight: 600,
+                fontSize: { xs: "1rem", md: "1.1rem" },
                 borderRadius: "8px",
+                background: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "rgba(255,255,255,0.03)"
+                    : "transparent",
+                "&:hover": {
+                  borderColor: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "#00c3ff"
+                      : theme.palette.primary.dark,
+                  background: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "rgba(0, 153, 255, 0.05)"
+                      : "rgba(0, 0, 0, 0.02)",
+                  transform: "translateY(-3px)",
+                },
+                transition: "all 0.3s ease",
               }}
             >
               Start Learning
             </Button>
+          </Box>
+
+          {/* Algorithm Cards Row - Seamlessly connected */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              gap: { xs: 2, md: 4 },
+              flexWrap: { xs: "wrap", md: "nowrap" },
+              mb: { xs: 2, md: 0 },
+              // This transforms the cards up to create overlap with next section
+              transform: { xs: "translateY(0)", md: "translateY(40px)" },
+              zIndex: 10,
+              position: "relative",
+            }}
+          >
+            {/* Binary Search Card */}
+            <Box
+              sx={{
+                width: { xs: "100%", sm: "30%", md: "220px" },
+                height: { xs: "120px", md: "140px" },
+                backgroundColor: "rgba(18, 30, 53, 0.6)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "8px",
+                border: "1px solid rgba(0, 153, 255, 0.1)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              {/* Card header */}
+              <Box
+                sx={{
+                  p: 1,
+                  borderBottom: "1px solid rgba(0, 153, 255, 0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    color: "rgba(255,255,255,0.7)",
+                  }}
+                >
+                  Binary Search
+                </Typography>
+              </Box>
+
+              {/* Simple visualization */}
+              <Box
+                sx={{
+                  p: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  height: "calc(100% - 40px)",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: 0.5,
+                    height: "100%",
+                  }}
+                >
+                  {[35, 20, 15, 30, 40, 50, 25].map((height, i) => (
+                    <Box
+                      key={i}
+                      sx={{
+                        height: `${height * 0.9}%`,
+                        width: "8px",
+                        backgroundColor:
+                          i === 3 ? "#00c6ff" : "rgba(255,255,255,0.1)",
+                        borderRadius: "2px 2px 0 0",
+                      }}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Bubble Sort Card */}
+            <Box
+              sx={{
+                width: { xs: "100%", sm: "30%", md: "220px" },
+                height: { xs: "120px", md: "140px" },
+                backgroundColor: "rgba(18, 30, 53, 0.6)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "8px",
+                border: "1px solid rgba(0, 145, 124, 0.1)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              {/* Card header */}
+              <Box
+                sx={{
+                  p: 1,
+                  borderBottom: "1px solid rgba(0, 145, 124, 0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    color: "rgba(255,255,255,0.7)",
+                  }}
+                >
+                  Bubble Sort
+                </Typography>
+              </Box>
+
+              {/* Simple visualization */}
+              <Box
+                sx={{
+                  p: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  height: "calc(100% - 40px)",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: 0.5,
+                    height: "100%",
+                  }}
+                >
+                  {[45, 25, 35, 15, 30, 20, 40, 10].map((height, i) => (
+                    <Box
+                      key={i}
+                      sx={{
+                        height: `${height * 0.9}%`,
+                        width: "8px",
+                        backgroundColor:
+                          i === 2 || i === 3
+                            ? "#00917c"
+                            : "rgba(255,255,255,0.1)",
+                        borderRadius: "2px 2px 0 0",
+                      }}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Graph Traversal Card */}
+            <Box
+              sx={{
+                width: { xs: "100%", sm: "30%", md: "220px" },
+                height: { xs: "120px", md: "140px" },
+                backgroundColor: "rgba(18, 30, 53, 0.6)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "8px",
+                border: "1px solid rgba(63, 81, 181, 0.1)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              {/* Card header */}
+              <Box
+                sx={{
+                  p: 1,
+                  borderBottom: "1px solid rgba(63, 81, 181, 0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    color: "rgba(255,255,255,0.7)",
+                  }}
+                >
+                  Graph Traversal
+                </Typography>
+              </Box>
+
+              {/* Simple graph visualization */}
+              <Box
+                sx={{
+                  p: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "calc(100% - 40px)",
+                }}
+              >
+                <svg width="100" height="60" viewBox="0 0 100 60">
+                  <circle cx="50" cy="20" r="6" fill="#3f51b5" />
+                  <circle cx="20" cy="40" r="6" fill="rgba(255,255,255,0.2)" />
+                  <circle cx="80" cy="40" r="6" fill="rgba(255,255,255,0.2)" />
+                  <line
+                    x1="50"
+                    y1="20"
+                    x2="20"
+                    y2="40"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="2"
+                  />
+                  <line
+                    x1="50"
+                    y1="20"
+                    x2="80"
+                    y2="40"
+                    stroke="#3f51b5"
+                    strokeWidth="2"
+                  />
+                  <line
+                    x1="20"
+                    y1="40"
+                    x2="80"
+                    y2="40"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </Box>
+            </Box>
           </Box>
         </Container>
       </Box>
@@ -562,6 +919,8 @@ const HomePage: React.FC = () => {
                 "@media (max-width: 600px)": {
                   flex: "1 1 100%",
                 },
+                position: "relative", // Add position relative here
+                zIndex: 1, // Add a normal z-index
               }}
             >
               <Card
@@ -574,6 +933,7 @@ const HomePage: React.FC = () => {
                   textDecoration: "none",
                   transition: "all 0.3s ease",
                   overflow: "visible",
+                  position: "relative", // Add this to ensure proper containment
                   border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
                   "&:hover": {
                     transform: "translateY(-12px)",
@@ -583,7 +943,11 @@ const HomePage: React.FC = () => {
                       boxShadow: `0 10px 25px ${alpha(category.color, 0.5)}`,
                     },
                   },
-                  "&:before": {
+                }}
+              >
+                {/* Background gradient */}
+                <Box
+                  sx={{
                     content: '""',
                     position: "absolute",
                     top: 0,
@@ -596,9 +960,9 @@ const HomePage: React.FC = () => {
                     )}, ${alpha(category.color, 0.1)})`,
                     borderRadius: "12px 12px 0 0",
                     zIndex: 0,
-                  },
-                }}
-              >
+                  }}
+                />
+
                 <Box
                   className="category-icon"
                   sx={{

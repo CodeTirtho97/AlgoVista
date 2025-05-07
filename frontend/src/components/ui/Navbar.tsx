@@ -70,12 +70,18 @@ const Navbar: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
+            <img
+              src="/algo_icon.png"
+              alt="AlgoVista Logo"
+              style={{ height: "28px", width: "auto" }}
+            />
             <Typography
-              variant="h6"
+              variant="h4"
               component={RouterLink}
               to="/"
               sx={{
+                marginRight: "1.2rem",
                 textDecoration: "none",
                 background: `linear-gradient(90deg, #00917c, #3f51b5)`, // New teal to indigo gradient
                 WebkitBackgroundClip: "text",
