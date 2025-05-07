@@ -1,6 +1,4 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -8,8 +6,6 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { Server as SocketIOServer } from 'socket.io';
 import mongoose from 'mongoose';
-import { typeDefs } from './graphql/typeDefs';
-import { resolvers } from './graphql/resolvers';
 import config from './config';
 import { errorHandler } from './middleware/errorHandler';
 import routes from './routes';
@@ -18,7 +14,6 @@ export default class App {
   public app: Application;
   public httpServer: http.Server;
   public io: SocketIOServer;
-  private apolloServer!: ApolloServer;
 
   constructor() {
     this.app = express();
@@ -32,30 +27,10 @@ export default class App {
     });
     
     this.configureMiddleware();
-    this.setupApolloServer();
     this.setupRoutes();
     this.setupErrorHandling();
     this.setupSocketIO();
   }
-
-  private async setupApolloServer(): Promise<void> {
-  this.apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: ({ req }) => {
-      const token = req.headers.authorization || '';
-      return { token };
-    },
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer: this.httpServer })],
-    introspection: config.nodeEnv !== 'production'
-  });
-
-  await this.apolloServer.start();
-  this.apolloServer.applyMiddleware({ 
-    app: this.app as any, // Type cast to avoid the type error
-    path: '/graphql' 
-  });
-}
 
   private configureMiddleware(): void {
     // Security middleware
