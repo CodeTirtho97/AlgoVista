@@ -30,7 +30,6 @@ async function startServer() {
   const server = application.httpServer.listen(PORT, () => {
     console.log(`
 🚀 Server ready at http://localhost:${PORT}
-🔋 GraphQL endpoint: http://localhost:${PORT}/graphql
 📱 Socket.IO ready for connections
 🔒 Environment: ${config.nodeEnv}
     `);

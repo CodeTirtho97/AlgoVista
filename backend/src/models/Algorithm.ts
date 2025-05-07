@@ -240,7 +240,7 @@ algorithmSchema.virtual('stats', {
 
 // Index for better search performance
 algorithmSchema.index({ name: 'text', description: 'text' });
-algorithmSchema.index({ slug: 1 });
+//algorithmSchema.index({ slug: 1 });
 algorithmSchema.index({ category: 1 });
 algorithmSchema.index({ difficulty: 1 });
 
